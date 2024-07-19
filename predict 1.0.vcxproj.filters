@@ -24,6 +24,9 @@
     <ClInclude Include="J_random.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Neural_network.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

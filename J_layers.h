@@ -346,3 +346,98 @@ public:
 		return input;
 	};
 };
+
+class J_layer {
+private:
+	int _par_size;
+
+	int _input_size;
+
+	int _activate_function_type;
+
+	J_liner_layer _liner;
+	J_relu_layer _relu;
+	J_leaky_relu_layer _leaky_relu;
+	J_sigmoid_layer _sigmoid;
+	J_tanh_layer _tanh;
+
+public:
+	J_layer(int input_size = 10, int activate_function_type = 4, int par_size = 20, double learning_rate = 0.1, int update_interval = 1, double momentum = 0.2, double decay_rate = 0.99, double min_learning_rate = 0.001) {
+		_input_size = input_size;
+		_par_size = par_size;
+		_activate_function_type = activate_function_type;
+		_liner = J_liner_layer(_input_size, _par_size, learning_rate, update_interval, momentum, decay_rate, min_learning_rate);
+		switch (_activate_function_type) {
+		case 0:
+			_relu = J_relu_layer(_par_size);
+			break;
+		case 1:
+			_leaky_relu = J_leaky_relu_layer(_par_size);
+			break;
+		case 2:
+			_sigmoid = J_sigmoid_layer(_par_size);
+			break;
+		case 3:
+			_tanh = J_tanh_layer(_par_size);
+			break;
+		case 4:
+			break;
+		default:
+			std::cout << "activate function type error" << std::endl;
+			exit(1);
+		}
+	};
+	std::vector<double> forward(std::vector<double> input) {
+		std::vector<double> ret = _liner.forward(input);
+		switch (_activate_function_type) {
+		case 0:
+			ret = _relu.forward(ret);
+			break;
+		case 1:
+			ret = _leaky_relu.forward(ret);
+			break;
+		case 2:
+			ret = _sigmoid.forward(ret);
+			break;
+		case 3:
+			ret = _tanh.forward(ret);
+			break;
+		case 4:
+			break;
+		default:
+			std::cout << "activate function type error" << std::endl;
+			exit(1);
+		}
+		return ret;
+	};
+	std::vector<double> backward(std::vector<double> input) {
+		std::vector<double> ret = input;
+		switch (_activate_function_type) {
+		case 0:
+			ret = _relu.backward(input);
+			break;
+		case 1:
+			ret = _leaky_relu.backward(input);
+			break;
+		case 2:
+			ret = _sigmoid.backward(input);
+			break;
+		case 3:
+			ret = _tanh.backward(input);
+			break;
+		case 4:
+			break;
+		default:
+			std::cout << "activate function type error" << std::endl;
+			exit(1);
+		}
+		ret = _liner.backward(ret);
+		return ret;
+	};
+	void save(std::string label = "J_layer") {
+		_liner.load(label);
+	}
+	void load(std::string label = "J_layer") {
+		_liner.load(label);
+	}	
+};
