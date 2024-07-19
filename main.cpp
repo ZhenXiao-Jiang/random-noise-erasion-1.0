@@ -4,7 +4,8 @@
 
 using namespace std;
 
-const double TARGET = 4;       //the maxium acceptable bias(used to evaluate the model)
+const double TARGET_0 = 3.5;       //the bias demand 1(used to evaluate the model)
+const double TARGET_1 = 4.5;       // the bias demand 2(used to evaluate the model)
 const bool do_train = 1;         //whether to train the model and save it or to load the trained model saved in the file
 const double learning_rate = 0.1;  //the learning rate of the model
 const int update_interval = 1;		
@@ -22,7 +23,7 @@ int main() {
 
 	//train
 	if (do_train) {
-		for (int episode = 0; episode < 500000; episode++) {			//the times of training are set here
+		for (int episode = 0; episode < 200000; episode++) {			//the times of training are set here
 			input.clear();
 			env.reset();
 			for (int i = 0; i < 5; i++) {
@@ -55,7 +56,9 @@ int main() {
 	
 	//evaluation
 	double max_0[2]{}, max_1[2]{};  //the maxium bias of the original observation and the output
-	int loss_count[2]{};			 //the number of times the bias exceeds the target
+	int loss_count_0[2]{};			 //the number of times the bias exceeds the target
+	int loss_count_1[2]{};
+	double avg_loss[2]{};          //the average bias
 	for (int episode = 0; episode < 1000; episode++) {
 		input.clear();
 		env.reset();
@@ -70,11 +73,19 @@ int main() {
 		for (int i = 0; i < 2; i++) {
 			input[i] = abs(input[i+8] - loss[i]);
 			loss[i] = abs(output[i] - loss[i]);
-			if (input[i] > TARGET) {
-				loss_count[0]++;
+			avg_loss[0] += input[i];
+			avg_loss[1] += loss[i];
+			if (input[i] > TARGET_0) {
+				loss_count_0[0]++;
 			}
-			if (loss[i] > TARGET) {
-				loss_count[1]++;
+			if (loss[i] > TARGET_0) {
+				loss_count_0[1]++;
+			}
+			if (input[i] > TARGET_1) {
+				loss_count_1[0]++;
+			}
+			if (loss[i] > TARGET_1) {
+				loss_count_1[1]++;
 			}
 			if (input[i] > max_0[i]) {
 				max_0[i] = input[i];
@@ -84,6 +95,6 @@ int main() {
 			}
 		}
 	}
-	cout << "Max obs bias: x: " << max_0[0] << " y: " << max_0[1] << " Loss count: " << loss_count[0] << "/2000" <<  endl;
-	cout << "Max out bias: x: " << max_1[0] << " y: " << max_1[1] << " Loss count: " << loss_count[1] << "/2000" << endl;
+	cout << "Max obs bias: x: " << max_0[0] << " y: " << max_0[1] << " Loss count: " << TARGET_0 << ": " << loss_count_0[0] << "/2000 " << TARGET_1 << ": " << loss_count_1[0] << "/2000 average bias : " << avg_loss[0] / 2000.0 << endl;
+	cout << "Max out bias: x: " << max_1[0] << " y: " << max_1[1] << " Loss count: " << TARGET_0 << ": " << loss_count_0[1] << "/2000 " << TARGET_1 << ": " << loss_count_1[1] << "/2000 average bias : " << avg_loss[1] / 2000.0 << endl;
 }
