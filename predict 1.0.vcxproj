@@ -130,6 +130,7 @@
     <ClInclude Include="env pre.h" />
     <ClInclude Include="J_layers.h" />
     <ClInclude Include="J_random.h" />
+    <ClInclude Include="Neural_network.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
