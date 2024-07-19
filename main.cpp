@@ -15,6 +15,7 @@ const double min_lr = 0.001;
 
 int main() {
 	printf("falasdfasjkdfjkahdfkl");
+	printf("adsfadf");
 	J_liner_layer layer1(10, 20, 0.1, 1, 0.2, 0.99, 0.001);			 //the parameters are input_size, output_size, learning_rate, update_interval, momentum, decay_rate, min_learning_rate
 	J_sigmoid_layer layer2(20);
 	J_liner_layer layer3(20, 2, 0.1, 1, 0.2, 0.99, 0.001);
