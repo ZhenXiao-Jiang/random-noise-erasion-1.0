@@ -4,19 +4,24 @@
 
 using namespace std;
 
-const double TARGET = 5.0;       //the maxium acceptable bias(used to evaluate the model)
-const bool do_train = true;         //whether to train the model and save it or to load the trained model saved in the file
+const double TARGET = 4;       //the maxium acceptable bias(used to evaluate the model)
+const bool do_train = 1;         //whether to train the model and save it or to load the trained model saved in the file
+const double learning_rate = 0.1;  //the learning rate of the model
+const int update_interval = 1;		
+const double momentum = 0.2;
+const double decay_rate = 0.99;
+const double min_lr = 0.001;
 
 int main() {
-	J_liner_layer layer1(10, 20, 0.1, 1, 0.2, 0.99, 0.001);			 //the parameters are input_size, output_size, learning_rate, update_interval, momentum, decay_rate, min_learning_rate
-	J_sigmoid_layer layer2(20);
-	J_liner_layer layer3(20, 2, 0.1, 1, 0.2, 0.99, 0.001);
+	J_liner_layer layer1(10, 20, learning_rate, update_interval, momentum, decay_rate, min_lr);			 //the parameters are input_size, output_size, learning_rate, update_interval, momentum, decay_rate, min_learning_rate
+	J_relu_layer layer2(20);		//simulate function
+	J_liner_layer layer3(20, 2, learning_rate, update_interval, momentum, decay_rate, min_lr);
 	Env env;
 	vector<double> input,output,loss;
 
 	//train
 	if (do_train) {
-		for (int episode = 0; episode < 100000; episode++) {			//the times of training are set here
+		for (int episode = 0; episode < 500000; episode++) {			//the times of training are set here
 			input.clear();
 			env.reset();
 			for (int i = 0; i < 5; i++) {
@@ -50,7 +55,7 @@ int main() {
 	//evaluation
 	double max_0[2]{}, max_1[2]{};  //the maxium bias of the original observation and the output
 	int loss_count[2]{};			 //the number of times the bias exceeds the target
-	for (int episode = 0; episode < 100; episode++) {
+	for (int episode = 0; episode < 1000; episode++) {
 		input.clear();
 		env.reset();
 		for (int i = 0; i < 5; i++) {
@@ -78,6 +83,6 @@ int main() {
 			}
 		}
 	}
-	cout << "Max obs bias: x: " << max_0[0] << " y: " << max_0[1] << " Loss count: " << loss_count[0] << "/200" <<  endl;
-	cout << "Max out bias: x: " << max_1[0] << " y: " << max_1[1] << " Loss count: " << loss_count[1] << "/200" << endl;
+	cout << "Max obs bias: x: " << max_0[0] << " y: " << max_0[1] << " Loss count: " << loss_count[0] << "/2000" <<  endl;
+	cout << "Max out bias: x: " << max_1[0] << " y: " << max_1[1] << " Loss count: " << loss_count[1] << "/2000" << endl;
 }

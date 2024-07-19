@@ -1,0 +1,6 @@
+1:
+add paras
+2:
+sig -> tanh
+3:
+tanh -> relu
