@@ -8,6 +8,7 @@ const double TARGET = 5.0;       //the maxium acceptable bias(used to evaluate t
 const bool do_train = true;         //whether to train the model and save it or to load the trained model saved in the file
 
 int main() {
+	printf("falasdfasjkdfjkahdfkl");
 	J_liner_layer layer1(10, 20, 0.1, 1, 0.2, 0.99, 0.001);			 //the parameters are input_size, output_size, learning_rate, update_interval, momentum, decay_rate, min_learning_rate
 	J_sigmoid_layer layer2(20);
 	J_liner_layer layer3(20, 2, 0.1, 1, 0.2, 0.99, 0.001);
