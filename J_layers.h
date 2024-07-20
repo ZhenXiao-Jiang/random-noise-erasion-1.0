@@ -9,7 +9,7 @@ private:
 	std::vector<std::vector<double>> _w, _update_w;
 	std::vector<double> _b, _update_b, _grad_w;
 public:
-	J_liner_layer(int input_size = 1, int output_size = 4, double learning_rate = 0.001, int update_interval = 1, double momentum = 0, double decay_rate = -1, double min_learning_rate = -1) {
+	J_liner_layer(int input_size = 1, int output_size = 4, double learning_rate = 0.001, int update_interval = 1, double momentum = 0, double decay_rate = -1, double min_learning_rate = -1, bool xavier_ini = 0) {
 		_input_size = input_size;
 		_output_size = output_size;
 		_learning_rate = learning_rate;
@@ -34,6 +34,9 @@ public:
 		for (int i = 0; i < _output_size; i++) {
 			_b[i] = (rand() % 1000) / 1000.0 - 0.5;
 			_update_b[i] = 0;
+		}
+		if (xavier_ini) {
+			_w = xavier_init(_input_size, _output_size);
 		}
 	};
 

@@ -33,6 +33,8 @@ public:
 		_momentum = momentum;
 		_decay_rate = decay_rate;
 		_min_lr = min_lr;
+		hidden_layers.clear();
+		_layers_size = 0;
 	}
 	void add_hidden_layer(int input_size, int par_size, int activate_function_type) {
 		hidden_layers.push_back(J_layer(input_size, activate_function_type, par_size, _learning_rate, _update_interval, _momentum, _decay_rate, _min_lr));

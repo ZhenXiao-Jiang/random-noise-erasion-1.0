@@ -24,3 +24,20 @@ double double_random_dis_0(double mean = 0, double stddev = 1, double max = 5) {
 		}
 	}
 }
+
+std::vector<std::vector<double>> xavier_init(int n_in, int n_out) {
+	std::random_device rd;  
+	std::mt19937 gen(rd()); 
+	double a = std::sqrt(6.0 / double(n_in + n_out));
+	std::uniform_real_distribution<> dis(-a, a); 
+
+	std::vector<std::vector<double>> weights(n_out, std::vector<double>(n_in));
+
+	for (int i = 0; i < n_out; ++i) {
+		for (int j = 0; j < n_in; ++j) {
+			weights[i][j] = dis(gen);
+		}
+	}
+
+	return weights;
+}
